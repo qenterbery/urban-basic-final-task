@@ -41,14 +41,14 @@ def classify_house(floor_count: int) -> str:
     if not isinstance(floor_count, int):
         type_er = "Тип данных floor_count не соответствует требованиям"
         raise TypeError(type_er)
-    if floor_count <= 0:
+    elif floor_count <= 0:
         val_er = "Значение floor_count не соответствует требованиям"
         raise ValueError(val_er)
-    if MIN_FLOOR_LOW <= floor_count <= MAX_FLOOR_LOW:
+    elif MIN_FLOOR_LOW <= floor_count <= MAX_FLOOR_LOW:
         houses_floor_counting = "Малоэтажный"
-    if MAX_FLOOR_LOW < floor_count <= MAX_FLOOR_MEDIUM:
+    elif MAX_FLOOR_LOW < floor_count <= MAX_FLOOR_MEDIUM:
         houses_floor_counting = "Среднеэтажный"
-    if floor_count > MAX_FLOOR_MEDIUM:
+    elif floor_count > MAX_FLOOR_MEDIUM:
         houses_floor_counting = "Многоэтажный"
     return houses_floor_counting
 
@@ -67,16 +67,16 @@ def get_classify_houses(houses: list[dict]) -> list[str]:
                 "Тип данных floor_count из списка houses не соответствует требованиям"
             )
             raise TypeError(type_er)
-        if classifying_int <= 0:
+        elif classifying_int <= 0:
             val_er = (
                 "Значение floor_count из списка houses не соответствует требованиям"
             )
             raise ValueError(val_er)
-        if MIN_FLOOR_LOW <= classifying_int <= MAX_FLOOR_LOW:
+        elif MIN_FLOOR_LOW <= classifying_int <= MAX_FLOOR_LOW:
             houses_floor_counting.append("Малоэтажный")
-        if MAX_FLOOR_LOW < classifying_int <= MAX_FLOOR_MEDIUM:
+        elif MAX_FLOOR_LOW < classifying_int <= MAX_FLOOR_MEDIUM:
             houses_floor_counting.append("Среднеэтажный")
-        if classifying_int > MAX_FLOOR_MEDIUM:
+        elif classifying_int > MAX_FLOOR_MEDIUM:
             houses_floor_counting.append("Многоэтажный")
 
     return houses_floor_counting
@@ -111,29 +111,5 @@ def min_area_residential(houses: list[dict]) -> str:
     :return: Адрес дома с наименьшим средним количеством квадратных метров
     жилой площади на одного жильца.
     """
-    average_area_list = []
-    for list_perebor in houses:
-        average_area_dict = {}
-        house_address = list_perebor["house_address"]
-        area_residential = float(list_perebor["area_residential"])
-        population = int(list_perebor["population"])
-        average_area = area_residential / population
-        average_area_dict["house_address"] = house_address
-        average_area_dict["average_area"] = average_area
-        average_area_list.append(average_area_dict)
-
-    min_area = float("inf")
-    min_area_address = "0"
-
-    for perebor_average_area_list in average_area_list:
-        perebor_average_area_list_area = float(
-            perebor_average_area_list["average_area"],
-        )
-        if perebor_average_area_list_area < min_area:
-            min_area_address = perebor_average_area_list["house_address"]
-            min_area = perebor_average_area_list["average_area"]
-
-    return min_area_address
-
-
-min_area_residential(houses)
+    min_area_address = min(houses, key = lambda x: x["area_residential"] / x["population"])
+    return min_area_address["house_address"]
